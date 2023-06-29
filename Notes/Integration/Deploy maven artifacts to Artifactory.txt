@@ -1,0 +1,25 @@
+Integration Steps
+1. Login to Jenkins to integrate Artifactory with Jenkins
+
+2. Install "Artifactory" plug-in
+	Manage Jenkins -> Jenkins Plugins -> available -> artifactory
+	Configure Artifactory server credentials
+	Manage Jenkins -> Configure System -> Artifactory
+	Artifactory Servers
+	Server ID : <Artifactory instance name>
+	URL : Artifactory Server URL
+	Username : maven
+	Password : maven@123
+
+(Jenkins job)
+1. Create a Maven Project
+   Create a new job
+	Job Name : artifactory-project
+   Source code management
+	Git URL : get URL here
+   Build Environment
+	Resolve artifacts from Artifactory : <provide Artifactory server and repository details>
+	Build - Goals: clean install
+   Post-build Actions
+	Deploy Artifacts to Artifactory : <provide Artifactory server and repository details>
+Execute job

@@ -1,0 +1,50 @@
+(Jenkins Master server)								
+1. create ssh key using : $ssh-keygen			
+	enter passphrase: <blank>s
+	enter ssh location: <blank>
+	Confirm:<blank>
+
+(Slave Server)
+1. Create user for Master: $useradd jenkins
+	$passwd jenkins
+	enter & confirm password for user
+
+2. Give permissions without entering password for new user
+	$visudo
+		jenkins 	ALL=ALL 	NOPASSWD=(ALL)
+
+3. Enable password authentication for new user
+	$vi /etc/ssh/sshd_config
+		uncomment "PasswordAuthentication Yes"
+	$service sshd reload
+
+
+(Jenkins Master server)
+1. Share the ssh id for remote access to slave
+	$ssh-copy-id -i <user>@<private_ip of slave server>
+	Enter slave user password for confirmation
+
+2. Check the root/.ssh/ for the authorized_keys with Master's Public ssh key(Slave server)
+
+(Jenkins Web)
+1. Manage jenkins-> Manage Node-> Create New node -> Name & Permanent agent *
+	No. of executors: 5
+	Remote root directory: /home/jenkins
+	Labels: maven_job
+	USage: As much as possible
+	Launch method: Via SSH
+		Host: <private IP of Slave>
+		credentials: <Jenkins user credentials>
+		Host Key Verfication strategy: No
+	Availability: Keep online as much as possible
+
+2. Save & Launch
+3. Create New job-> Maven project -> Name
+	Restrict where this is run-> Label-> maven_job(this will make the agent to run)
+	SCM:
+		*git
+		url: <git repository path>
+	Build:
+		Root: pom.xml
+		goals: clean install
+   Save & build

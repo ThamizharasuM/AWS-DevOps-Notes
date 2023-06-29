@@ -1,0 +1,28 @@
+(Jenkins server)
+1. Install Git & Maven
+2. Set Java_home & M2_home path in .bash_profile
+3. Make sure that Tomcat_users.xml is updated in Tomcat server.
+3. Start Jenkins web & Tomcat web via http://<public_IP>/<port>
+
+(Jenkins web)
+1. Manage Jenkins--> Global Tool COnfiguration
+	Tool: git
+	path: /usr/lib/git
+
+	Tool: maven
+	path: /opt/maven/apache...
+
+2. New job- Maven Project - Name: <name>
+	SCM:
+	* Git
+	Path: <git repository https URL>
+
+	Build:
+	Root: Pom.xml
+	Goals: clean install
+
+	Post-build: Deploy war/ear files to container
+	War/ear files: target/*.war
+	Container: Tomcat7
+	Credentials: deployer/deployer
+	URL: http://43.204.101.149:8090/ 
